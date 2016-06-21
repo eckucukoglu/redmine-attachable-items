@@ -1,0 +1,25 @@
+<p>
+<%= link_to "Back", project_items_path %> |
+<%= link_to "New Item", new_project_item_path %> |
+<%= link_to "Add Custom Field", new_project_items_custom_field_path %> |
+<%= link_to "Delete Field", project_items_custom_field_path(:id => @customfield.id), method: :delete, data: { confirm: 'Are you sure?' } %>
+</p>
+
+<h2>Custom field properties</h2>
+
+<br>
+<%= form_for :customfield, url: project_items_custom_field_path(@project, @customfield), method: :put do |f| %>
+    <%= f.label "Name:" %> <%= f.text_field :name, :required => true %>
+    <br><br>
+    <%= f.label "Field format:" %> <%= f.select :field_format, [["Boolean", "boolean"],
+                                                               ["Date", "date"],
+                                                               ["Float", "float"],
+                                                               ["Integer", "integer"],
+                                                               ["List", "list"],
+                                                               ["Text", "text"],
+                                                               ["String", "string"]], :required => true %>
+    <br><br>
+    <%= f.label "Default value:" %> <%= f.text_field :default_value, :required => true %>
+    <br><br>
+    <%= f.submit 'Edit Custom Field'%>
+<% end %>

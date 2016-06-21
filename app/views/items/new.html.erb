@@ -1,0 +1,11 @@
+<p>
+<%= link_to "Back", project_items_path %> |
+<%= link_to "Add Custom Field", new_project_items_custom_field_path %> |
+</p>
+
+<h2>Generate New Item</h2>
+
+<br>
+<%= form_for :item, url: project_items_path do |f| %>
+    <%= f.label "Unique name:" %> <%= f.text_field :unique_name, :required => true %> <%= f.submit %>
+<% end %>

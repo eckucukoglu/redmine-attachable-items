@@ -1,0 +1,22 @@
+<p>
+<%= link_to "Back", project_items_path %> |
+<%= link_to "New Item", new_project_item_path %> |
+</p>
+
+<h2>Add Custom Field</h2>
+
+<br>
+<%= form_for :customfield, url: project_items_custom_fields_path do |f| %>
+    <%= f.label "Name:" %> <%= f.text_field :name, :required => true %>
+    <br><br>
+    <%= f.label "Field format:" %> <%= f.select :field_format, options_for_select([["Boolean", 'boolean'],
+                                                                                 ["Date", "date"],
+                                                                                 ["Float", "float"],
+                                                                                 ["Integer", "integer"],
+                                                                                 ["Text", "text"],
+                                                                                 ["String", "string"]]), { :include_blank => 'Select One' }, :required => true %>
+    <br><br>
+    <%= f.label "Default value:" %> <%= f.text_field :default_value, :required => true %>
+    <br><br>
+    <%= f.submit 'Add Custom Field'%>
+<% end %>
