@@ -94,7 +94,21 @@ class ItemsController < ApplicationController
   def destroy
     @item = Item.find(params[:id])
 
-    if @item.destroy
+    @status = @item.destroy
+
+    if @status
+      @customvalues = ItemsCustomValues.find(:all).select {|i| i.items_id == @item.id }
+      @customvalues.each do |customvalue|
+        customvalue.destroy
+      end
+
+      @itemsissues = ItemsIssues.find(:all).select {|i| i.items_id == @item.id }
+      @itemsissues.each do |itemissue|
+        itemissue.destroy
+      end
+    end
+
+    if @status
       flash[:success] = "Item deleted."
       redirect_to project_items_path
     else
