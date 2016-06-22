@@ -1,6 +1,6 @@
 <h2>Attachable Items</h2>
 
-<%= link_to "New Item", new_project_item_path %>
+<%= link_to "New Item", new_project_item_path if User.current.allowed_to?(:create_items, @project) %>
 
 <% if @items.blank? %>
   <p>There are not any items currently in the system.</p>
@@ -9,8 +9,8 @@
   <% @items.each do |c| %>
     <li>
       <%= c.unique_name %>
-      <%= link_to "Edit", edit_project_item_path(:id => c.id), method: :get %> |
-      <%= link_to "Delete", project_item_path(:id => c.id), method: :delete, data: { confirm: 'Are you sure?' } %>
+      <%= link_to "Edit", edit_project_item_path(:id => c.id), method: :get if User.current.allowed_to?(:create_items, @project) %> |
+      <%= link_to "Delete", project_item_path(:id => c.id), method: :delete, data: { confirm: 'Are you sure?' } if User.current.allowed_to?(:create_items, @project) %>
     </li>
   <% end %>
 <% end %>
@@ -19,7 +19,7 @@
 <br><br>
 <h2>Custom Fields</h2>
 
-<%= link_to "Add Custom Field", new_project_items_custom_field_path %>
+<%= link_to "Add Custom Field", new_project_items_custom_field_path if User.current.allowed_to?(:create_custom_fields, @project) %>
 
 <% if @project_custom_fields.blank? %>
   <p>There are not any custom fields currently in the system.</p>
@@ -28,8 +28,8 @@
   <% @project_custom_fields.each do |c| %>
     <li>
       <%= c.name %>
-      <%= link_to "Edit",  edit_project_items_custom_field_path(:id => c.id), method: :get %> |
-      <%= link_to "Delete", project_items_custom_field_path(:id => c.id), method: :delete, data: { confirm: 'Are you sure?' } %>
+      <%= link_to "Edit",  edit_project_items_custom_field_path(:id => c.id), method: :get if User.current.allowed_to?(:create_custom_fields, @project) %> |
+      <%= link_to "Delete", project_items_custom_field_path(:id => c.id), method: :delete, data: { confirm: 'Are you sure?' } if User.current.allowed_to?(:create_custom_fields, @project) %>
     </li>
   <% end %>
 <% end %>

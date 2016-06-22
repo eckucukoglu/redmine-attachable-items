@@ -1,8 +1,8 @@
 <p>
 <%= link_to "Back", project_items_path %> |
-<%= link_to "New Item", new_project_item_path %> |
-<%= link_to "Add Custom Field", new_project_items_custom_field_path %> |
-<%= link_to "Delete Field", project_items_custom_field_path(:id => @customfield.id), method: :delete, data: { confirm: 'Are you sure?' } %>
+<%= link_to "New Item", new_project_item_path if User.current.allowed_to?(:create_items, @project) %> |
+<%= link_to "Add Custom Field", new_project_items_custom_field_path if User.current.allowed_to?(:create_custom_fields, @project) %> |
+<%= link_to "Delete Field", project_items_custom_field_path(:id => @customfield.id), method: :delete, data: { confirm: 'Are you sure?' } if User.current.allowed_to?(:create_custom_fields, @project) %>
 </p>
 
 <h2>Custom field properties</h2>

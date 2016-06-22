@@ -1,0 +1,10 @@
+<%
+  @itemsissue = ItemsIssues.find_by_issues_id(params[:id])
+  unless @itemsissue == nil
+    @item = Item.find(@itemsissue.items_id)
+  end
+%>
+<% unless @item == nil %>
+  <b><%= label :items, "Attached item:" %></b>
+  <%= link_to @item.unique_name, edit_project_item_path(:project_id => @item.project_id, :id => @item.id), method: :get %>
+<% end %>
