@@ -2,7 +2,7 @@ require_dependency 'attitems'
 require_dependency 'items_hook_listener'
 
 Redmine::Plugin.register :attitems do
-  name 'Attachable Items plugin'
+  name 'Attachable Items'
   url 'http://www.redmine.org/plugins/attitems'
   description 'Attach customizable items that can have custom fields to issues.'
   author 'Emre Can Kucukoglu'

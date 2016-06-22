@@ -1,6 +1,6 @@
 <p>
 <%= link_to "Back", project_items_path %> |
-<%= link_to "New Item", new_project_item_path if User.current.allowed_to?(:create_items, @project) %> |
+<%= link_to "New Item", new_project_item_path if User.current.allowed_to?(:create_items, @project) %>
 </p>
 
 <h2>Add Custom Field</h2>

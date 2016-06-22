@@ -6,5 +6,9 @@
 %>
 <% unless @item == nil %>
   <b><%= label :items, "Attached item:" %></b>
-  <%= link_to @item.unique_name, edit_project_item_path(:project_id => @item.project_id, :id => @item.id), method: :get %>
+  <% if User.current.allowed_to?(:create_items, @project) %>
+    <%= link_to @item.unique_name, edit_project_item_path(:project_id => @item.project_id, :id => @item.id), method: :get %>
+  <% else %>
+    <%= @item.unique_name %>
+  <% end %>
 <% end %>
