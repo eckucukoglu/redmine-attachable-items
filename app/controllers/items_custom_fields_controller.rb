@@ -1,7 +1,7 @@
 class ItemsCustomFieldsController < ApplicationController
   unloadable
   before_filter :find_project_by_project_id ,:authorize
-  
+
   def new
     @project = Project.find(params[:project_id])
     @customfield = ItemsCustomFields.new
@@ -50,7 +50,16 @@ class ItemsCustomFieldsController < ApplicationController
   def destroy
     @customfield = ItemsCustomFields.find(params[:id])
 
-    if @customfield.destroy
+    @status = @customfield.destroy
+
+    if @status
+      @customvalues = ItemsCustomValues.find(:all).select {|i| i.items_custom_fields_id == @customfield.id }
+      @customvalues.each do |customvalue|
+        customvalue.destroy
+      end
+    end
+
+    if @status
       flash[:success] = "Custom field deleted."
       redirect_to project_items_path
     else
