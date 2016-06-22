@@ -31,11 +31,11 @@
       <% if field.field_format == "boolean" %>
         <%= f.check_box @valname, (@val == '1' ? {:checked => true} : {:checked => false}) %>
       <% elsif field.field_format == "date" %>
-        <%= f.text_field @valname, :value => @val %>
+        <%= f.text_field @valname, :value => @val, :type => "date" %>
       <% elsif field.field_format == "float" %>
-        <%= f.text_field @valname, :value => @val %>
+        <%= f.text_field @valname, :value => @val, :type => "number", :step => "any" %>
       <% elsif field.field_format == "integer" %>
-        <%= f.text_field @valname, :value => @val %>
+        <%= f.text_field @valname, :value => @val, :type => "number" %>
       <% elsif field.field_format == "text" %>
         <%= f.text_area @valname, :value => @val, cols: "30", rows: "3" %>
       <% elsif field.field_format == "string" %>
