@@ -16,7 +16,7 @@
                                                                                  ["Text", "text"],
                                                                                  ["String", "string"]]), { :include_blank => 'Select One' }, :required => true %>
     <br><br>
-    <%= f.label "Default value:" %> <%= f.text_field :default_value, :required => true %>
+    <%= f.label "Default value:" %> <%= f.text_field :default_value %>
     <br><br>
     <%= f.submit 'Add Custom Field'%>
 <% end %>

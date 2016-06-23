@@ -5,5 +5,5 @@ class ItemsCustomFields < ActiveRecord::Base
 
   has_many :items_custom_values
 
-  validates :name, :field_format, :default_value, :project_id, presence: true
+  validates :name, :field_format, :project_id, presence: true
 end
