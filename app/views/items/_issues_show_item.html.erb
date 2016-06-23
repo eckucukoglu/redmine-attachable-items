@@ -1,3 +1,4 @@
+
 <%
   @itemsissue = ItemsIssues.find_by_issues_id(params[:id])
   unless @itemsissue == nil
@@ -6,9 +7,5 @@
 %>
 <% unless @item == nil %>
   <b><%= label :items, "Attached item:" %></b>
-  <% if User.current.allowed_to?(:create_items, @project) %>
-    <%= link_to @item.unique_name, edit_project_item_path(:project_id => @item.project_id, :id => @item.id), method: :get %>
-  <% else %>
-    <%= @item.unique_name %>
-  <% end %>
+  <%= @item.unique_name %>
 <% end %>
