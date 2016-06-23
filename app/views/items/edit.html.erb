@@ -27,7 +27,7 @@
       <% end %>
       <% @valname = "value_" + field.id.to_s %>
 
-      <%= field.name %> (<%= field.field_format %>):
+      <%= field.name %> (<%= field.field_format %>) (<%= field.default_value %>):
       <% if field.field_format == "boolean" %>
         <%= f.check_box @valname, (@val == '1' ? {:checked => true} : {:checked => false}) %>
       <% elsif field.field_format == "date" %>
