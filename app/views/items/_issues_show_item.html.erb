@@ -6,7 +6,7 @@
     end
   %>
   <% unless @item == nil %>
-    <b><%= label :items, "Attached item:" %></b>
+    <b><%= label :items, Setting['plugin_attitems']['issue_label'] %></b>
     <%= @item.unique_name %>
   <% end %>
 <% end %>

@@ -13,7 +13,7 @@ Redmine::Plugin.register :attitems do
   settings({
      :partial => 'settings/attitems',
      :default => {
-       'label_name' => 'Items'
+       'issue_label' => 'Attach Item:'
       }
   })
 

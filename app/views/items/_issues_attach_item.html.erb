@@ -1,7 +1,7 @@
 <% if @project.module_enabled?("items") == true %>
 
   <p>
-  <%= label :items, "Attach item" %>
+  <%= label :items, Setting['plugin_attitems']['issue_label'] %>
   <%
     if params[:project_id] != nil
       @project = Project.find(params[:project_id])
