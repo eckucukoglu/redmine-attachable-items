@@ -1,18 +1,21 @@
-<p>
-<%= label :items, "Attach item" %>
-<%
-  if params[:project_id] != nil
-    @project = Project.find(params[:project_id])
-  else
-    @issue = Issue.find(params[:id])
-    @project = Project.find(@issue.project_id)
-  end
+<% if @project.module_enabled?("items") == true %>
 
-  @project_items = Item.find(:all).select {|i| i.project_id == @project.id }
-  @options = Array.new
-  @project_items.each do |item|
-    @options.push([item.unique_name, item.id])
-  end
-%>
-<%= select :items, :item_id, options_for_select(@options), { :include_blank => 'Select One' } %>
-</p>
+  <p>
+  <%= label :items, "Attach item" %>
+  <%
+    if params[:project_id] != nil
+      @project = Project.find(params[:project_id])
+    else
+      @issue = Issue.find(params[:id])
+      @project = Project.find(@issue.project_id)
+    end
+
+    @project_items = Item.find(:all).select {|i| i.project_id == @project.id }
+    @options = Array.new
+    @project_items.each do |item|
+      @options.push([item.unique_name, item.id])
+    end
+  %>
+  <%= select :items, :item_id, options_for_select(@options), { :include_blank => 'Select One' } %>
+  </p>
+<% end %>

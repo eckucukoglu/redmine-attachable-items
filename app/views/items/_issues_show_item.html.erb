@@ -1,11 +1,12 @@
-
-<%
-  @itemsissue = ItemsIssues.find_by_issues_id(params[:id])
-  unless @itemsissue == nil
-    @item = Item.find(@itemsissue.items_id)
-  end
-%>
-<% unless @item == nil %>
-  <b><%= label :items, "Attached item:" %></b>
-  <%= @item.unique_name %>
+<% if @project.module_enabled?("items") == true %>
+  <%
+    @itemsissue = ItemsIssues.find_by_issues_id(params[:id])
+    unless @itemsissue == nil
+      @item = Item.find(@itemsissue.items_id)
+    end
+  %>
+  <% unless @item == nil %>
+    <b><%= label :items, "Attached item:" %></b>
+    <%= @item.unique_name %>
+  <% end %>
 <% end %>
