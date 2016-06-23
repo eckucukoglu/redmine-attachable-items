@@ -5,5 +5,5 @@ class ItemsCustomValues < ActiveRecord::Base
   belongs_to :items
   belongs_to :items_custom_fields
 
-  validates :items_id, :items_custom_fields_id, :value, presence: true
+  validates :items_id, :items_custom_fields_id, presence: true
 end

@@ -21,13 +21,13 @@
       <% @vals = @item_custom_values.select {|i| i.items_custom_fields_id == field.id } %>
 
       <% if @vals.blank? %>
-        <% @val = nil %>
+        <% @val = field.default_value %>
       <% elsif %>
         <% @val = @vals[0].value %>
       <% end %>
       <% @valname = "value_" + field.id.to_s %>
 
-      <%= field.name %> (<%= field.field_format %>) (<%= field.default_value %>):
+      <%= field.name %> (<%= field.field_format %>):
       <% if field.field_format == "boolean" %>
         <%= f.check_box @valname, (@val == '1' ? {:checked => true} : {:checked => false}) %>
       <% elsif field.field_format == "date" %>
