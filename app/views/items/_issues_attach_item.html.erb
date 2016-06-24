@@ -10,12 +10,19 @@
       @project = Project.find(@issue.project_id)
     end
 
+    @itemsissues = ItemsIssues.find_all_by_issues_id(params[:id])
+
+
     @project_items = Item.find(:all).select {|i| i.project_id == @project.id }
     @options = Array.new
+    @selectedoptions = Array.new
     @project_items.each do |item|
       @options.push([item.unique_name, item.id])
+      if @itemsissues.detect{|w| w.items_id == item.id } != nil
+        @selectedoptions.push(item.id)
+      end
     end
   %>
-  <%= select :items, :item_id, options_for_select(@options), { :include_blank => 'Select One' } %>
+  <%= select :items, :item_ids, options_for_select(@options, @selectedoptions), {}, {:multiple => true} %>
   </p>
 <% end %>

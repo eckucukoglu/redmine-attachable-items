@@ -1,12 +1,13 @@
 <% if @project.module_enabled?("items") == true %>
-  <%
-    @itemsissue = ItemsIssues.find_by_issues_id(params[:id])
-    unless @itemsissue == nil
-      @item = Item.find(@itemsissue.items_id)
-    end
-  %>
-  <% unless @item == nil %>
-    <b><%= label :items, Setting['plugin_attitems']['issue_label'] %></b>
-    <%= @item.unique_name %>
+  <b><%= label :items, Setting['plugin_attitems']['issue_label'] %></b>
+
+  <% @itemsissues = ItemsIssues.find_all_by_issues_id(params[:id]) %>
+  <% @itemsissues.each do |itemsissue| %>
+    <% unless itemsissue == nil %>
+      <% @item = Item.find(itemsissue.items_id) %>
+    <% end %>
+    <% unless @item == nil %>
+      <%= @item.unique_name %>, 
+    <% end %>
   <% end %>
 <% end %>
