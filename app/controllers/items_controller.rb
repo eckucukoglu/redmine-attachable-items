@@ -1,12 +1,11 @@
 class ItemsController < ApplicationController
   unloadable
-  # before_filter :find_project, :authorize, :only => [:index]
   before_filter :find_project_by_project_id ,:authorize
 
   def index
     @project = Project.find(params[:project_id])
-    @items = Item.find(:all).select {|i| i.project_id == @project.id }
-    @project_custom_fields = ItemsCustomFields.find(:all).select {|i| i.project_id == @project.id }
+    @items = Item.where(project_id: @project.id)
+    @project_custom_fields = ItemsCustomFields.where(project_id: @project.id)
   end
 
   def new
@@ -30,8 +29,8 @@ class ItemsController < ApplicationController
   def edit
     @project = Project.find(params[:project_id])
     @item = Item.find_by_id_and_project_id(params[:id], @project.id)
-    @project_custom_fields = ItemsCustomFields.find(:all).select {|i| i.project_id == @project.id }
-    @item_custom_values = ItemsCustomValues.find(:all).select {|i| i.items_id == @item.id }
+    @project_custom_fields = ItemsCustomFields.where(project_id: @project.id)
+    @item_custom_values = ItemsCustomValues.where(items_id: @item.id)
   end
 
   def add_custom_value
@@ -97,12 +96,12 @@ class ItemsController < ApplicationController
     @status = @item.destroy
 
     if @status
-      @customvalues = ItemsCustomValues.find(:all).select {|i| i.items_id == @item.id }
+      @customvalues = ItemsCustomValues.where(items_id: @item.id)
       @customvalues.each do |customvalue|
         customvalue.destroy
       end
 
-      @itemsissues = ItemsIssues.find(:all).select {|i| i.items_id == @item.id }
+      @itemsissues = ItemsIssues.where(items_id: @item.id)
       @itemsissues.each do |itemissue|
         itemissue.destroy
       end

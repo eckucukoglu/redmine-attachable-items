@@ -53,7 +53,7 @@ class ItemsCustomFieldsController < ApplicationController
     @status = @customfield.destroy
 
     if @status
-      @customvalues = ItemsCustomValues.find(:all).select {|i| i.items_custom_fields_id == @customfield.id }
+      @customvalues = ItemsCustomValues.where(items_custom_fields_id: @customfield.id)
       @customvalues.each do |customvalue|
         customvalue.destroy
       end

@@ -10,10 +10,10 @@
       @project = Project.find(@issue.project_id)
     end
 
-    @itemsissues = ItemsIssues.find_all_by_issues_id(params[:id])
+    @itemsissues = ItemsIssues.where(issues_id: params[:id])
 
 
-    @project_items = Item.find(:all).select {|i| i.project_id == @project.id }
+    @project_items = Item.where(project_id: @project.id)
     @options = Array.new
     @selectedoptions = Array.new
     @project_items.each do |item|

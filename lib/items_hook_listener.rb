@@ -6,7 +6,7 @@ class ItemsHookListener < Redmine::Hook::ViewListener
     @project = Project.find(context[:issue][:project_id])
     if @project.module_enabled?("items") == true
       @item_ids = context[:params][:items][:item_ids]
-      @itemsissues = ItemsIssues.find_all_by_issues_id(context[:issue][:id])
+      @itemsissues = ItemsIssues.where(issues_id: context[:issue][:id])
 
       if @item_ids != nil
         @item_ids.each do |item_id|

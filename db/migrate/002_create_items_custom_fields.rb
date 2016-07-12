@@ -7,6 +7,5 @@ class CreateItemsCustomFields < ActiveRecord::Migration
       t.references :project, index: true, foreign_key: true
     end
 
-    add_index :items_custom_fields, :project_id
   end
 end

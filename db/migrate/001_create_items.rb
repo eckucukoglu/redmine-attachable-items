@@ -6,6 +6,5 @@ class CreateItems < ActiveRecord::Migration
     end
 
     add_index :items, :unique_name
-    add_index :items, :project_id
   end
 end
