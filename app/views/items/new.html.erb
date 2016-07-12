@@ -5,7 +5,8 @@
 
 <h2>Generate New Item</h2>
 
-<br>
+<table>
 <%= form_for :item, url: project_items_path do |f| %>
-    <%= f.label "Unique name:" %> <%= f.text_field :unique_name, :required => true %> <%= f.submit %>
+    <tr><td><%= f.label "Unique name:" %></td><td> <%= f.text_field :unique_name, :required => true %> <%= f.submit %></td></tr>
 <% end %>
+</table>

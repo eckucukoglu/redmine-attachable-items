@@ -2,12 +2,12 @@
   <b><%= label :items, Setting['plugin_attitems']['issue_label'] %></b>
 
   <% @itemsissues = ItemsIssues.where(issues_id: params[:id]) %>
-  <% @itemsissues.each do |itemsissue| %>
-    <% unless itemsissue == nil %>
-      <% @item = Item.find(itemsissue.items_id) %>
+    <% @itemsissues.each do |itemsissue| %>
+      <% unless itemsissue == nil %>
+        <% @item = Item.find(itemsissue.items_id) %>
+      <% end %>
+      <% unless @item == nil %>
+        <%= @item.unique_name %>,
+      <% end %>
     <% end %>
-    <% unless @item == nil %>
-      <%= @item.unique_name %>,
-    <% end %>
-  <% end %>
 <% end %>

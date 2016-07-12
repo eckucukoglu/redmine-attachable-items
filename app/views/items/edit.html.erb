@@ -7,45 +7,54 @@
 
 <h2>Item Properties</h2>
 
-<br>
+<table>
 <%= form_for :item, url: project_item_path(@project, @item), method: :put do |f| %>
-    <%= f.label "Unique name:" %> <%= f.text_field :unique_name, :required => true %> <%= f.submit "Change unique name" %>
+    <tr>
+      <td><%= f.label "Unique name:" %></td>
+      <td><%= f.text_field :unique_name, :required => true %></td>
+      <td> <%= f.submit "Change unique name" %></td>
+    </tr>
 <% end %>
+</table>
 
-<br><br><br>
+<br>
 <h3>Custom Values</h3>
 
 <% if @project_custom_fields.length > 0 %>
-  <%= form_for :items_custom_values, url: project_item_add_custom_value_path(@project, @item), method: :post do |f| %>
-    <% @project_custom_fields.each do |field| %>
-      <% @vals = @item_custom_values.select {|i| i.items_custom_fields_id == field.id } %>
+  <table>
+    <%= form_for :items_custom_values, url: project_item_add_custom_value_path(@project, @item), method: :post do |f| %>
+      <% @project_custom_fields.each do |field| %>
+        <% @vals = @item_custom_values.select {|i| i.items_custom_fields_id == field.id } %>
 
-      <% if @vals.blank? %>
-        <% @val = field.default_value %>
-      <% elsif %>
-        <% @val = @vals[0].value %>
-      <% end %>
-      <% @valname = "value_" + field.id.to_s %>
+        <% if @vals.blank? %>
+          <% @val = field.default_value %>
+        <% elsif %>
+          <% @val = @vals[0].value %>
+        <% end %>
+        <% @valname = "value_" + field.id.to_s %>
 
-      <%= field.name %> (<%= field.field_format %>):
-      <% if field.field_format == "boolean" %>
-        <%= f.check_box @valname, (@val == '1' ? {:checked => true} : {:checked => false}) %>
-      <% elsif field.field_format == "date" %>
-        <%= f.text_field @valname, :value => @val, :type => "date" %>
-      <% elsif field.field_format == "float" %>
-        <%= f.text_field @valname, :value => @val, :type => "number", :step => "any" %>
-      <% elsif field.field_format == "integer" %>
-        <%= f.text_field @valname, :value => @val, :type => "number" %>
-      <% elsif field.field_format == "text" %>
-        <%= f.text_area @valname, :value => @val, cols: "30", rows: "3" %>
-      <% elsif field.field_format == "string" %>
-        <%= f.text_field @valname, :value => @val %>
+        <tr>
+          <td><%= field.name %> (<%= field.field_format %>):</td>
+          <td>
+            <% if field.field_format == "boolean" %>
+              <%= f.check_box @valname, (@val == '1' ? {:checked => true} : {:checked => false}) %>
+            <% elsif field.field_format == "date" %>
+              <%= f.text_field @valname, :value => @val, :type => "date" %>
+            <% elsif field.field_format == "float" %>
+              <%= f.text_field @valname, :value => @val, :type => "number", :step => "any" %>
+            <% elsif field.field_format == "integer" %>
+              <%= f.text_field @valname, :value => @val, :type => "number" %>
+            <% elsif field.field_format == "text" %>
+              <%= f.text_area @valname, :value => @val, cols: "30", rows: "3" %>
+            <% elsif field.field_format == "string" %>
+              <%= f.text_field @valname, :value => @val %>
+            <% end %>
+          </td>
+        </tr>
       <% end %>
-      <br><br>
+      <tr><td><%= f.submit "Save field values" %></td></tr>
     <% end %>
-    <br>
-    <%= f.submit "Save field values" %>
-  <% end %>
+  </table>
 <% else %>
   <p>There are not any custom fields for this project.</p>
 <% end %>

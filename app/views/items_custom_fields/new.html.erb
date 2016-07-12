@@ -5,18 +5,16 @@
 
 <h2>Add Custom Field</h2>
 
-<br>
+<table>
 <%= form_for :customfield, url: project_items_custom_fields_path do |f| %>
-    <%= f.label "Name:" %> <%= f.text_field :name, :required => true %>
-    <br><br>
-    <%= f.label "Field format:" %> <%= f.select :field_format, options_for_select([["Boolean", 'boolean'],
+    <tr><td><%= f.label "Name:" %></td> <td><%= f.text_field :name, :required => true %></td></tr>
+    <tr><td><%= f.label "Field format:" %></td><td> <%= f.select :field_format, options_for_select([["Boolean", 'boolean'],
                                                                                  ["Date", "date"],
                                                                                  ["Float", "float"],
                                                                                  ["Integer", "integer"],
                                                                                  ["Text", "text"],
-                                                                                 ["String", "string"]]), { :include_blank => 'Select One' }, :required => true %>
-    <br><br>
-    <%= f.label "Default value:" %> <%= f.text_field :default_value %>
-    <br><br>
-    <%= f.submit 'Add Custom Field'%>
+                                                                                 ["String", "string"]]), { :include_blank => 'Select One' }, :required => true %></td></tr>
+    <tr><td><%= f.label "Default value:" %></td> <td><%= f.text_field :default_value %></td></tr>
+    <tr><td><%= f.submit 'Add Custom Field'%></td><td></td></tr>
 <% end %>
+</table>

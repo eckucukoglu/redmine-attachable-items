@@ -7,19 +7,17 @@
 
 <h2>Custom field properties</h2>
 
-<br>
+<table>
 <%= form_for :customfield, url: project_items_custom_field_path(@project, @customfield), method: :put do |f| %>
-    <%= f.label "Name:" %> <%= f.text_field :name, :required => true %>
-    <br><br>
-    <%= f.label "Field format:" %> <%= f.select :field_format, [["Boolean", "boolean"],
+    <tr><td><%= f.label "Name:" %> </td><td><%= f.text_field :name, :required => true %></td></tr>
+    <tr><td><%= f.label "Field format:" %></td> <td><%= f.select :field_format, [["Boolean", "boolean"],
                                                                ["Date", "date"],
                                                                ["Float", "float"],
                                                                ["Integer", "integer"],
                                                                ["List", "list"],
                                                                ["Text", "text"],
-                                                               ["String", "string"]], :required => true %>
-    <br><br>
-    <%= f.label "Default value:" %> <%= f.text_field :default_value %>
-    <br><br>
-    <%= f.submit 'Edit Custom Field'%>
+                                                               ["String", "string"]], :required => true %></td></tr>
+    <tr><td><%= f.label "Default value:" %> </td><td><%= f.text_field :default_value %></td></tr>
+    <tr><td><%= f.submit 'Edit Custom Field'%></td></tr>
 <% end %>
+</table>
