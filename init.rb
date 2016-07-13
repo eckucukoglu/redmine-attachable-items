@@ -25,7 +25,3 @@ Redmine::Plugin.register :attitems do
     permission :create_custom_fields, :items_custom_fields => [:new, :create, :edit, :update, :destroy]
   end
 end
-
-Rails.configuration.to_prepare do
-  AttachableItems.setup
-end
