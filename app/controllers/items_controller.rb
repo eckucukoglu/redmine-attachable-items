@@ -42,10 +42,6 @@ class ItemsController < ApplicationController
     @times = params[:items_custom_values].length
 
     params[:items_custom_values].each do |pair|
-      # if pair[1] == ""
-      #   @times = @times - 1
-      #   next
-      # end
 
       @custom_field_id = pair[0].split('_')[1]
       @customvalue = ItemsCustomValues.find_by_items_id_and_items_custom_fields_id(params[:item_id], @custom_field_id)
@@ -92,7 +88,6 @@ class ItemsController < ApplicationController
 
   def destroy
     @item = Item.find(params[:id])
-
     @status = @item.destroy
 
     if @status
@@ -118,7 +113,6 @@ class ItemsController < ApplicationController
 
   private
   def find_project
-    # @project variable must be set before calling the authorize filter
     @project = Project.find(params[:project_id])
   end
 
