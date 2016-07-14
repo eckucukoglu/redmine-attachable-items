@@ -1,6 +1,6 @@
 class ItemsHookListener < Redmine::Hook::ViewListener
   render_on :view_issues_form_details_bottom, :partial => "items/issues_attach_item"
-  render_on :view_issues_show_description_bottom, :partial => "items/issues_show_item"
+  render_on :view_issues_show_details_bottom, :partial => "items/issues_show_item"
 
   def controller_issues_new_after_save(context={})
     @project = Project.find(context[:issue][:project_id])
