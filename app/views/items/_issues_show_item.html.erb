@@ -1,4 +1,5 @@
 <% if @project.module_enabled?("items") == true %>
+  <p>
   <b><%= label :items, Setting['plugin_attitems']['issue_label'] %></b>
 
   <% @itemsissues = ItemsIssues.where(issues_id: params[:id]) %>
@@ -10,4 +11,5 @@
         <%= @item.unique_name %>,
       <% end %>
     <% end %>
+  </p>
 <% end %>
