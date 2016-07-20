@@ -10,7 +10,7 @@
       @project = Project.find(@issue.project_id)
     end
 
-    @itemsissues = ItemsIssues.where(issues_id: params[:id])
+    @itemsissues = ItemsIssue.where(issue_id: params[:id])
 
 
     @project_items = Item.where(project_id: @project.id)
@@ -18,7 +18,7 @@
     @selectedoptions = Array.new
     @project_items.each do |item|
       @options.push([item.unique_name, item.id])
-      if @itemsissues.detect{|w| w.items_id == item.id } != nil
+      if @itemsissues.detect{|w| w.item_id == item.id } != nil
         @selectedoptions.push(item.id)
       end
     end

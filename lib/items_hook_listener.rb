@@ -6,16 +6,17 @@ class ItemsHookListener < Redmine::Hook::ViewListener
     @project = Project.find(context[:issue][:project_id])
     if @project.module_enabled?("items") == true
       @item_ids = context[:params][:items][:item_ids]
-      @itemsissues = ItemsIssues.where(issues_id: context[:issue][:id])
+      @itemsissues = ItemsIssue.where(issue_id: context[:issue][:id])
 
       if @item_ids != nil
         @item_ids.each do |item_id|
           if item_id != ""
             @issue_id = context[:issue][:id]
-            @itemsissue = ItemsIssues.find_by_issues_id_and_items_id(@issue_id, item_id)
+            @itemsissue = ItemsIssue.find_by_issue_id_and_item_id(@issue_id, item_id)
             if @itemsissue == nil
-              @itemsissue = ItemsIssues.new(:items_id => item_id, :issues_id => @issue_id)
+              @itemsissue = ItemsIssue.new(:item_id => item_id, :issue_id => @issue_id)
               @status = @itemsissue.save
+              # TODO: journaldetail
             end
 
             unless @status
@@ -30,7 +31,7 @@ class ItemsHookListener < Redmine::Hook::ViewListener
         @itemsissues.each do |itemsissue|
           @isExist = false
           @item_ids.each do |item_id|
-            if item_id.to_i == itemsissue.items_id.to_i
+            if item_id.to_i == itemsissue.item_id.to_i
               @isExist = true
               break
             end
@@ -38,6 +39,7 @@ class ItemsHookListener < Redmine::Hook::ViewListener
 
           unless @isExist
             itemsissue.destroy
+            # TODO: journaldetail
           end
 
         end
