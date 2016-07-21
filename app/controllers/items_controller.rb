@@ -6,6 +6,7 @@ class ItemsController < ApplicationController
     @project = Project.find(params[:project_id])
     @items = Item.where(project_id: @project.id)
     @project_custom_fields = ItemsCustomField.where(project_id: @project.id)
+    @histories = ItemsHistory.where(:project_id => @project.id).order("action_time ASC")
   end
 
   def new
@@ -18,15 +19,7 @@ class ItemsController < ApplicationController
     @item = Item.new(:project_id => @project.id, :unique_name => params[:item][:unique_name])
 
     if @item.save
-      ItemsHistory.new(:project_id => @project.id,
-                       :user_id => User.current.id,
-                       :action_time => DateTime.now,
-                       :action_type => "new",
-                       :object_type => "item",
-                       :object_id => @item.id,
-                       :field_name => "unique_name",
-                       :old_value => "",
-                       :value => @item.unique_name).save
+      generateHistory(@project, "new", @item)
       flash[:success] = "Item created. Please set custom fields if exists."
       redirect_to edit_project_item_path(:project_id => @project.id, :id => @item.id)
     else
@@ -60,27 +53,11 @@ class ItemsController < ApplicationController
                                              :items_custom_field_id => @custom_field_id,
                                              :value => pair[1])
         @status = @customvalue.save
-        ItemsHistory.new(:project_id => @project.id,
-                         :user_id => User.current.id,
-                         :action_time => DateTime.now,
-                         :action_type => "new",
-                         :object_type => "itemscustomvalue",
-                         :object_id => @customvalue.id,
-                         :field_name => "value",
-                         :old_value => "",
-                         :value => @customvalue.value).save
+        generateHistory(@project, "new", @customvalue)
       elsif @customvalue.value != pair[1]
         old_custom_value = @customvalue.value
         @status = @customvalue.update_attributes(:value => pair[1])
-        ItemsHistory.new(:project_id => @project.id,
-                         :user_id => User.current.id,
-                         :action_time => DateTime.now,
-                         :action_type => "update",
-                         :object_type => "itemscustomvalue",
-                         :object_id => @customvalue.id,
-                         :field_name => "value",
-                         :old_value => old_custom_value,
-                         :value => @customvalue.value).save
+        generateHistory(@project, "update", @customvalue, old_custom_value)
       else
         @status = true # since no need to change.
       end
@@ -110,16 +87,7 @@ class ItemsController < ApplicationController
     old_unique_name = @item.unique_name
 
     if @item.update_attributes(:unique_name => params[:item][:unique_name], :project_id => @project.id)
-      ItemsHistory.new(:project_id => @project.id,
-                       :user_id => User.current.id,
-                       :action_time => DateTime.now,
-                       :action_type => "update",
-                       :object_type => "item",
-                       :object_id => @item.id,
-                       :field_name => "unique_name",
-                       :old_value => old_unique_name,
-                       :value => @item.unique_name).save
-
+      generateHistory(@project, "update", @item, old_unique_name)
       flash[:success] = "Item updated."
       redirect_to project_items_path(:project_id => @project.id)
     else
@@ -131,21 +99,10 @@ class ItemsController < ApplicationController
   def destroy
     @project = Project.find(params[:project_id])
     @item = Item.find(params[:id])
-    old_unique_name = @item.unique_name
-    old_id = @item.id
     @status = @item.destroy
 
     if @status
-      ItemsHistory.new(:project_id => @project.id,
-                       :user_id => User.current.id,
-                       :action_time => DateTime.now,
-                       :action_type => "destroy",
-                       :object_type => "item",
-                       :object_id => old_id,
-                       :field_name => "unique_name",
-                       :old_value => old_unique_name,
-                       :value => "").save
-
+      generateHistory(@project, "destroy", @item)
       @customvalues = ItemsCustomValue.where(item_id: @item.id)
       @customvalues.each do |customvalue|
         customvalue.destroy
@@ -153,20 +110,8 @@ class ItemsController < ApplicationController
 
       @itemsissues = ItemsIssue.where(item_id: @item.id)
       @itemsissues.each do |itemissue|
-        item_id = itemissue.item_id
-        issue_id = itemissue.issue_id
-        item_id_issue_id = item_id.to_s + "-" + issue_id.to_s
-        old_itemsissue_id = itemissue.id
         itemissue.destroy
-        ItemsHistory.new(:project_id => @project.id,
-                         :user_id => User.current.id,
-                         :action_time => DateTime.now,
-                         :action_type => "destroy",
-                         :object_type => "itemsissue",
-                         :object_id => old_itemsissue_id,
-                         :field_name => "item_id-issue_id",
-                         :old_value => item_id_issue_id,
-                         :value => "").save
+        generateHistory(@project, "destroy", itemissue)
       end
     end
 

@@ -1,6 +1,9 @@
+# require_relative "../app/helpers/items_history_helper"
+
 class ItemsHookListener < Redmine::Hook::ViewListener
   render_on :view_issues_form_details_bottom, :partial => "items/issues_attach_item"
   render_on :view_issues_show_details_bottom, :partial => "items/issues_show_item"
+  # include ItemsHistoryHelper
 
   def controller_issues_new_after_save(context={})
     @project = Project.find(context[:issue][:project_id])
@@ -16,7 +19,7 @@ class ItemsHookListener < Redmine::Hook::ViewListener
             if @itemsissue == nil
               @itemsissue = ItemsIssue.new(:item_id => item_id, :issue_id => @issue_id)
               @status = @itemsissue.save
-              # TODO: journaldetail
+              generateHistory(@project, "new", @itemsissue)
             end
 
             unless @status
@@ -39,7 +42,7 @@ class ItemsHookListener < Redmine::Hook::ViewListener
 
           unless @isExist
             itemsissue.destroy
-            # TODO: journaldetail
+            generateHistory(@project, "destroy", itemsissue)
           end
 
         end

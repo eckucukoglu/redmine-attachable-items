@@ -1,7 +1,7 @@
 class ItemsCustomFieldsController < ApplicationController
   unloadable
   before_filter :find_project_by_project_id ,:authorize
-
+  
   def new
     @project = Project.find(params[:project_id])
     @customfield = ItemsCustomField.new
@@ -16,15 +16,7 @@ class ItemsCustomFieldsController < ApplicationController
 
 
     if @customfield.save
-      ItemsHistory.new(:project_id => @project.id,
-                       :user_id => User.current.id,
-                       :action_time => DateTime.now,
-                       :action_type => "new",
-                       :object_type => "itemscustomfield",
-                       :object_id => @customfield.id,
-                       :field_name => "name",
-                       :old_value => "",
-                       :value => @customfield.name).save
+      generateHistory(@project, "new", @customfield)
       flash[:success] = "Custom field created."
       redirect_to project_items_path
     else
@@ -42,12 +34,27 @@ class ItemsCustomFieldsController < ApplicationController
   def update
     @project = Project.find(params[:project_id])
     @customfield = ItemsCustomField.find(params[:id])
+    name = @customfield.name
+    field_format = @customfield.field_format
+    default_value = @customfield.default_value
 
     if @customfield.update_attributes(:project_id => @project.id,
-                                      :name => params[:customfield][:name],
-                                      :field_format => params[:customfield][:field_format],
-                                      :default_value => params[:customfield][:default_value])
-      # TODO: journaldetail
+      :name => params[:customfield][:name],
+      :field_format => params[:customfield][:field_format],
+      :default_value => params[:customfield][:default_value])
+
+      if name != params[:customfield][:name]
+        generateHistory(@project, "update", @customfield, name, :name)
+      end
+
+      if field_format != params[:customfield][:field_format]
+        generateHistory(@project, "update", @customfield, field_format, :field_format)
+      end
+
+      if default_value != params[:customfield][:default_value]
+        generateHistory(@project, "update", @customfield, default_value, :default_value)
+      end
+
       flash[:success] = "Custom field updated."
       redirect_to project_items_path(:project_id => @project.id)
     else
@@ -60,20 +67,10 @@ class ItemsCustomFieldsController < ApplicationController
   def destroy
     @project = Project.find(params[:project_id])
     @customfield = ItemsCustomField.find(params[:id])
-    old_custom_field_id = @customfield.id
-    old_custom_field_name = @customfield.name
     @status = @customfield.destroy
 
     if @status
-      ItemsHistory.new(:project_id => @project.id,
-                       :user_id => User.current.id,
-                       :action_time => DateTime.now,
-                       :action_type => "destroy",
-                       :object_type => "itemscustomfield",
-                       :object_id => old_custom_field_id,
-                       :field_name => "name",
-                       :old_value => old_custom_field_name,
-                       :value => "").save
+      generateHistory(@project, "destroy", @customfield)
       @customvalues = ItemsCustomValue.where(items_custom_field_id: @customfield.id)
       @customvalues.each do |customvalue|
         customvalue.destroy
