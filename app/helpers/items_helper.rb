@@ -63,7 +63,7 @@ module ItemsHelper
     end
 
     if history.action_type == "new"
-      htmltext += "<td><font color='green'><b>" + "New " + "</b></font></td><td><b>" + history.object_type + "</b></td><td>"
+      htmltext += "<td><font color='green'><b>" + "New " + "</b></font></td><td><b>" + history.object_type + "</b> (id:" + history.object_id.to_s + ")</td><td>"
 
       if history.object_type == "Item" || history.object_type == "ItemsCustomField"
         htmltext += " created with name " + history.value
@@ -112,11 +112,11 @@ module ItemsHelper
         return ""
       end
     elsif history.action_type == "update"
-      htmltext += "<td><font color='blue'><b>" + "Update on " + "</b></font></td><td><b>" + history.object_type + "</b></td><td>"
+      htmltext += "<td><font color='blue'><b>" + "Update on " + "</b></font></td><td><b>" + history.object_type + "</b>(" + history.object_id.to_s + ")</td><td>"
       htmltext += " changed " + history.field_name + " from " + history.old_value + " to " + history.value
 
     elsif history.action_type == "destroy"
-      htmltext += "<td><font color='red'><b>" + "Deleted " + "</b></font></td><td><b>" + history.object_type + "</b></td><td>"
+      htmltext += "<td><font color='red'><b>" + "Deleted " + "</b></font></td><td><b>" + history.object_type + "</b>(" + history.object_id.to_s + ")</td><td>"
 
       if history.object_type == "Items" || history.object_type == "ItemsCustomField"
         htmltext += " that was named as " + history.old_value
