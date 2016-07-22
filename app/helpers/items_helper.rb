@@ -53,16 +53,104 @@ module ItemsHelper
     return status
   end
 
-  def getHistoryText (history)
-    return history.user_id
-    # user_id
-    # action_time
-    # action_type
-    # object_type
-    # object_id
-    # field_name
-    # old_value
-    # value
+  def testfnc
+    return "test"
   end
 
+  def getHistoryText (history)
+    htmltext = ""
+    user = User.find_by_id(history.user_id)
+    if user != nil
+      username = user.firstname + " " + user.lastname
+    else
+      username = "unknown user (" + history.user_id + ")"
+    end
+
+    if history.action_type == "new"
+      htmltext += "<td><font color='green'><b>" + "New " + "</b></font></td><td><b>" + history.object_type + "</b></td><td>"
+
+      if history.object_type == "Item" || history.object_type == "ItemsCustomField"
+        htmltext += " created with name " + history.value
+      elsif history.object_type == "ItemsCustomValue"
+        icv = ItemsCustomValue.find_by_id(history.object_id)
+        if icv != nil
+          item = Item.find_by_id(icv.item_id)
+          icf = ItemsCustomField.find_by_id(icv.items_custom_field_id)
+
+          if item != nil
+            item_unique_name = item.unique_name
+          else
+            item_unique_name = "unknown item (" + icv.item_id + ")"
+          end
+
+          if icf != nil
+            icf_name = icf.name
+          else
+            icf_name = "unknown custom field (" + icv.items_custom_field_id + ")"
+          end
+        else
+          item_unique_name = "unknown item"
+          icf_name = "unknown custom field"
+        end
+
+        htmltext += " saved for " + item_unique_name + "'s " + icf_name + " field with value " + history.value
+      elsif history.object_type == "ItemsIssue"
+        item_issue_id = history.value.split("-")
+        item = Item.find_by_id(item_issue_id[0])
+        issue = Issue.find_by_id(item_issue_id[1])
+
+        if item != nil
+          item_unique_name = item.unique_name
+        else
+          item_unique_name = "unknown item (" + item_issue_id[0] +")"
+        end
+
+        if issue != nil
+          issue_subject = issue.subject
+        else
+          issue_subject = "unknown issue (" + item_issue_id[1] + ")"
+        end
+
+        htmltext += " relation created between " + issue_subject + " and " + item_unique_name
+      else
+        return ""
+      end
+    elsif history.action_type == "update"
+      htmltext += "<td><font color='blue'><b>" + "Update on " + "</b></font></td><td><b>" + history.object_type + "</b></td><td>"
+      htmltext += " changed " + history.field_name + " from " + history.old_value + " to " + history.value
+
+    elsif history.action_type == "destroy"
+      htmltext += "<td><font color='red'><b>" + "Deleted " + "</b></font></td><td><b>" + history.object_type + "</b></td><td>"
+
+      if history.object_type == "Items" || history.object_type == "ItemsCustomField"
+        htmltext += " that was named as " + history.old_value
+      elsif history.object_type == "ItemsIssue"
+        item_issue_id = history.old_value.split("-")
+        item = Item.find_by_id(item_issue_id[0])
+        issue = Issue.find_by_id(item_issue_id[1])
+
+        if item != nil
+          item_unique_name = item.unique_name
+        else
+          item_unique_name = "unknown item (" + item_issue_id[0] +")"
+        end
+
+        if issue != nil
+          issue_subject = issue.subject
+        else
+          issue_subject = "unknown issue (" + item_issue_id[1] + ")"
+        end
+
+        htmltext += " relation between " + issue_subject + " and " + item_unique_name
+      else
+        return ""
+      end
+
+
+    else
+      return ""
+    end
+    htmltext += "<td> by <b>" + username + "</b></td><td> on <b>" + Time.parse(history.action_time.to_s).utc.localtime.strftime("%m/%d/%Y %I:%M %p") + "</b>.</td>"
+    render html: htmltext.html_safe
+  end
 end

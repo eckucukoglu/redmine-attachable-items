@@ -1,7 +1,8 @@
 class ItemsCustomFieldsController < ApplicationController
   unloadable
   before_filter :find_project_by_project_id ,:authorize
-  
+  include ItemsHelper
+
   def new
     @project = Project.find(params[:project_id])
     @customfield = ItemsCustomField.new

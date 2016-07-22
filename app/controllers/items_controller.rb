@@ -1,12 +1,14 @@
 class ItemsController < ApplicationController
   unloadable
   before_filter :find_project_by_project_id ,:authorize
+  include ItemsHelper
 
   def index
     @project = Project.find(params[:project_id])
     @items = Item.where(project_id: @project.id)
     @project_custom_fields = ItemsCustomField.where(project_id: @project.id)
     @histories = ItemsHistory.where(:project_id => @project.id).order("action_time ASC")
+    puts testfnc
   end
 
   def new

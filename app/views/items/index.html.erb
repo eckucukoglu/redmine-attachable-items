@@ -5,14 +5,18 @@
 <% if @items.blank? %>
   <p>There are not any items currently in the system.</p>
 <% else %>
-  <p>These are the current items in our system</p>
+  <p>These are the current items:</p>
+  <table>
   <% @items.each do |c| %>
-    <li>
-      <%= c.unique_name %>
-      <%= link_to "Edit", edit_project_item_path(:id => c.id), method: :get if User.current.allowed_to?(:create_items, @project) %> |
-      <%= link_to "Delete", project_item_path(:id => c.id), method: :delete, data: { confirm: 'Are you sure?' } if User.current.allowed_to?(:create_items, @project) %>
-    </li>
+    <tr>
+      <li>
+        <%= c.unique_name %>
+        <%= link_to "Edit", edit_project_item_path(:id => c.id), method: :get if User.current.allowed_to?(:create_items, @project) %> |
+        <%= link_to "Delete", project_item_path(:id => c.id), method: :delete, data: { confirm: 'Are you sure?' } if User.current.allowed_to?(:create_items, @project) %>
+      </li>
+    </tr>
   <% end %>
+</table>
 <% end %>
 
 
@@ -24,20 +28,26 @@
 <% if @project_custom_fields.blank? %>
   <p>There are not any custom fields currently in the system.</p>
 <% else %>
-  <p>These are the current custom fields in our system</p>
-  <% @project_custom_fields.each do |c| %>
-    <li>
-      <%= c.name %>
-      <%= link_to "Edit",  edit_project_items_custom_field_path(:id => c.id), method: :get if User.current.allowed_to?(:create_custom_fields, @project) %> |
-      <%= link_to "Delete", project_items_custom_field_path(:id => c.id), method: :delete, data: { confirm: 'Are you sure?' } if User.current.allowed_to?(:create_custom_fields, @project) %>
-    </li>
-  <% end %>
+  <p>These are the current custom fields:</p>
+  <table>
+    <% @project_custom_fields.each do |c| %>
+      <tr>
+        <li>
+          <%= c.name %>
+          <%= link_to "Edit",  edit_project_items_custom_field_path(:id => c.id), method: :get if User.current.allowed_to?(:create_custom_fields, @project) %> |
+          <%= link_to "Delete", project_items_custom_field_path(:id => c.id), method: :delete, data: { confirm: 'Are you sure?' } if User.current.allowed_to?(:create_custom_fields, @project) %>
+        </li>
+      </tr>
+    <% end %>
+  </table>
 <% end %>
 
 <br><br>
 <h2>History</h2>
-<% @histories.each do |history| %>
-  <li>
-    <%= "osman" %>
-  </li>
-<% end %>
+<table>
+  <% @histories.each do |history| %>
+    <tr>
+      <%= getHistoryText(history) %>
+    </tr>
+  <% end %>
+</table>
