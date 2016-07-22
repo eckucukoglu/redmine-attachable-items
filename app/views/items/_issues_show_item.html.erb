@@ -3,13 +3,20 @@
   <b><%= label :items, Setting['plugin_attitems']['issue_label'] %></b>
 
   <% @itemsissues = ItemsIssue.where(issue_id: params[:id]) %>
-    <% @itemsissues.each do |itemsissue| %>
-      <% unless itemsissue == nil %>
-        <% @item = Item.find(itemsissue.item_id) %>
-      <% end %>
-      <% unless @item == nil %>
-        <%= @item.unique_name %>,
-      <% end %>
+  <% @itemsissues.each do |itemsissue| %>
+
+    <% unless itemsissue == nil %>
+      <% @item = Item.find(itemsissue.item_id) %>
     <% end %>
+
+    <% unless @item == nil %>
+      <%= @item.unique_name %>,
+    <% end %>
+
+  <% end %>
+  <% @removed_item_issue_relations = ItemsRemovedIssueRelations.where(:issue_id => params[:id])%>
+  <% @removed_item_issue_relations.each do |removed_item_issue_relation| %>
+      <del><%= removed_item_issue_relation.item_unique_name %></del>,
+  <% end %>
   </p>
 <% end %>

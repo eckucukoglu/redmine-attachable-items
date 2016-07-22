@@ -42,6 +42,8 @@ class ItemsHookListener < Redmine::Hook::ViewListener
 
           unless @isExist
             itemsissue.destroy
+            removed_item_issue_relation = ItemsRemovedIssueRelations.new(:issue_id => itemsissue.issue_id, :item_unique_name => Item.find_by_id(itemsissue.item_id).unique_name)
+            removed_item_issue_relation.save
             generateHistory(@project, "destroy", itemsissue)
           end
 

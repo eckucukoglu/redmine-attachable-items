@@ -110,9 +110,11 @@ class ItemsController < ApplicationController
       end
 
       @itemsissues = ItemsIssue.where(item_id: @item.id)
-      @itemsissues.each do |itemissue|
-        itemissue.destroy
-        generateHistory(@project, "destroy", itemissue)
+      @itemsissues.each do |itemsissue|
+        itemsissue.destroy
+        removed_item_issue_relation = ItemsRemovedIssueRelations.new(:issue_id => itemsissue.issue_id, :item_unique_name => @item.unique_name)
+        removed_item_issue_relation.save
+        generateHistory(@project, "destroy", itemsissue)
       end
     end
 
