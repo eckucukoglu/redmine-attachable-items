@@ -53,10 +53,6 @@ module ItemsHelper
     return status
   end
 
-  def testfnc
-    return "test"
-  end
-
   def getHistoryText (history)
     htmltext = ""
     user = User.find_by_id(history.user_id)

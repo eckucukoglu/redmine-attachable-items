@@ -8,7 +8,6 @@ class ItemsController < ApplicationController
     @items = Item.where(project_id: @project.id)
     @project_custom_fields = ItemsCustomField.where(project_id: @project.id)
     @histories = ItemsHistory.where(:project_id => @project.id).order("action_time ASC")
-    puts testfnc
   end
 
   def new
