@@ -4,7 +4,7 @@ class CreateItemsCustomFields < ActiveRecord::Migration
       t.column "name", :string, :limit => 30, :default => "", :null => false
       t.column "field_format", :string, :limit => 30, :default => "", :null => false
       t.column "default_value", :text
-      t.references :project, index: true, foreign_key: true
+      t.references :project, null: false
     end
 
   end
