@@ -18,10 +18,10 @@ class ItemsCustomFieldsController < ApplicationController
 
     if @customfield.save
       generateHistory(@project, "new", @customfield)
-      flash[:success] = "Custom field created."
+      flash[:notice] = "Custom field created."
       redirect_to project_items_path
     else
-      flash.now[:alert] = "Custom field couldn't be created! Please check the form."
+      flash.now[:error] = "Custom field couldn't be created! Please check the form."
       Rails.logger.info(@customfield.errors.inspect)
       render project_items_path
     end
@@ -56,11 +56,11 @@ class ItemsCustomFieldsController < ApplicationController
         generateHistory(@project, "update", @customfield, default_value, :default_value)
       end
 
-      flash[:success] = "Custom field updated."
+      flash[:notice] = "Custom field updated."
       redirect_to project_items_path(:project_id => @project.id)
     else
       Rails.logger.info(@customfield.errors.inspect)
-      flash.now[:alert] = "Custom field couldn't be updated! Please check the form."
+      flash.now[:error] = "Custom field couldn't be updated! Please check the form."
       render project_items_path(:project_id => @project.id)
     end
   end
@@ -79,10 +79,10 @@ class ItemsCustomFieldsController < ApplicationController
     end
 
     if @status
-      flash[:success] = "Custom field deleted."
+      flash[:notice] = "Custom field deleted."
       redirect_to project_items_path
     else
-      flash.now[:alert] = "Custom field couldn't be deleted!"
+      flash.now[:error] = "Custom field couldn't be deleted!"
       render project_items_path
     end
   end

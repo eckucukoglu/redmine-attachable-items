@@ -21,10 +21,10 @@ class ItemsController < ApplicationController
 
     if @item.save
       generateHistory(@project, "new", @item)
-      flash[:success] = "Item created. Please set custom fields if exists."
+      flash[:notice] = "Item created. Please set custom fields if exists."
       redirect_to edit_project_item_path(:project_id => @project.id, :id => @item.id)
     else
-      flash.now[:alert] = "Item couldn't be created! Please check the form."
+      flash.now[:error] = "Item couldn't be created! Please check the form."
       render new_project_item_path
     end
   end
@@ -39,7 +39,7 @@ class ItemsController < ApplicationController
   def add_custom_value
     @project = Project.find(params[:project_id])
     if params[:items_custom_values] == nil
-      flash[:success] = "Nothing changed for item."
+      flash[:notice] = "Nothing changed for item."
       render project_items_path
     end
 
@@ -72,10 +72,10 @@ class ItemsController < ApplicationController
     end
 
     if @times == 0
-      flash[:success] = "Item custom values set."
+      flash[:notice] = "Item custom values set."
       redirect_to project_items_path
     else
-      flash.now[:alert] = "Item custom values couldn't set! Please check the form."
+      flash.now[:error] = "Item custom values couldn't set! Please check the form."
       render edit_project_item_path(:project_id => params[:project_id],
                                     :id => params[:item_id])
     end
@@ -89,10 +89,10 @@ class ItemsController < ApplicationController
 
     if @item.update_attributes(:unique_name => params[:item][:unique_name], :project_id => @project.id)
       generateHistory(@project, "update", @item, old_unique_name)
-      flash[:success] = "Item updated."
+      flash[:notice] = "Item updated."
       redirect_to project_items_path(:project_id => @project.id)
     else
-      flash.now[:alert] = "Item couldn't be updated! Please check the form."
+      flash.now[:error] = "Item couldn't be updated! Please check the form."
       render edit_project_item_path(:project_id => @project.id, :id => @item.id)
     end
   end
@@ -119,10 +119,10 @@ class ItemsController < ApplicationController
     end
 
     if @status
-      flash[:success] = "Item deleted."
+      flash[:notice] = "Item deleted."
       redirect_to project_items_path
     else
-      flash.now[:alert] = "Item couldn't be deleted!"
+      flash.now[:error] = "Item couldn't be deleted!"
       render project_items_path
     end
   end
