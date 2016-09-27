@@ -7,7 +7,7 @@ class ItemsHookListener < Redmine::Hook::ViewListener
 
   def controller_issues_new_after_save(context={})
     @project = Project.find(context[:issue][:project_id])
-    if @project.module_enabled?("items") == true
+    if @project.module_enabled?("items") == true and context[:params][:items] != nil
       @item_ids = context[:params][:items][:item_ids]
       @itemsissues = ItemsIssue.where(issue_id: context[:issue][:id])
 
